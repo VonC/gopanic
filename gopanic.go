@@ -57,8 +57,9 @@ func lookForReason(l *lexer) stateFn {
 		}
 		fl.line = ln
 		r := &reason{cause: res[2], file: fl}
-		fmt.Println(r.String())
-		return nil
+		fmt.Println("PANIC:\n" + r.String())
+		l.pos = l.pos + 1
+		return lookForStack
 	}
 	l.pos = l.pos + 1
 	return lookForReason
