@@ -66,7 +66,7 @@ func lookForReason(l *lexer) stateFn {
 }
 
 func (l *lexer) errorf(format string, args ...interface{}) stateFn {
-	fmt.Printf(format, args)
+	fmt.Printf(format, args...)
 	return nil
 }
 
