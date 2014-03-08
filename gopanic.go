@@ -106,7 +106,13 @@ func lookForStack(l *lexer) stateFn {
 	l.pos = l.pos + 1
 	line = l.lines[l.pos]
 
-	s := &stack{function: function}
+	var fl *fileLine
+	var err error
+	if fl, err = newFileLine(line); err != nil {
+		return l.errorf("Unable to read file for reason in line '%v'\n Cause: '%v'", l.pos, err)
+	}
+
+	s := &stack{fileLine: fl, function: function}
 	fmt.Println(s.String())
 
 	l.pos = l.pos + 1
