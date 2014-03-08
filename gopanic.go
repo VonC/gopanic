@@ -4,15 +4,22 @@ import (
 	"errors"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
 )
 import "fmt"
 
+var gopath = os.Getenv("gopath") + "/src"
+var pwd, _ = os.Getwd()
+
 // http://stackoverflow.com/questions/6359318/how-do-i-send-a-message-to-stderr-from-cmd
 // a_command 2>&1 | gopanic
 func main() {
+	gopath = strings.Replace(gopath, "\\", "/", -1)
+	pwd = strings.Replace(pwd, "\\", "/", -1)
+	fmt.Println(gopath)
 	// http://stackoverflow.com/questions/12363030/read-from-initial-stdin-in-go
 	b, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {
@@ -74,10 +81,14 @@ var functionRx, _ = regexp.Compile(`\s*?([^ ]+/[^\.]+)\.([^\)]+\))`)
 
 func (s *stack) String() string {
 	msg := ""
+	f := s.function
 	if s.fileLine != nil {
 		msg = msg + s.fileLine.String() + " "
+		if strings.HasPrefix(f, s.fileLine.prefix) {
+			f = f[len(s.fileLine.prefix):]
+		}
 	}
-	msg = msg + s.function
+	msg = msg + f
 	return msg
 }
 
@@ -125,8 +136,9 @@ func (l *lexer) errorf(format string, args ...interface{}) stateFn {
 }
 
 type fileLine struct {
-	file string
-	line int
+	file   string
+	prefix string
+	line   int
 }
 
 func newFileLine(line string) (*fileLine, error) {
@@ -141,7 +153,44 @@ func newFileLine(line string) (*fileLine, error) {
 			return nil, errors.New(fmt.Sprintf("Couldn't extract line number for from line '%v' '%v'", res[2], res))
 		}
 	}
-	fl := &fileLine{file: res[1], line: ln}
+	file := strings.TrimSpace(res[1])
+	filedir := filepath.Dir(file)
+	f := filedir
+	rel, _ := filepath.Rel(pwd, filedir)
+	//fmt.Println("aaa: " + rel)
+	if strings.HasPrefix(file, gopath) {
+		file = file[len(gopath)+1:]
+	}
+	if strings.HasPrefix(pwd, gopath) {
+		rel = strings.Replace(rel, "\\", "/", -1)
+		rels := strings.Split(rel, "/")
+		m := ""
+		b := false
+		for _, arel := range rels {
+			if arel == ".." {
+				filedir = filepath.Dir(filedir)
+				m = m + "../"
+			} else if arel != "" {
+				b = true
+			}
+		}
+		if !b && m != "" {
+			filedir = f
+		}
+		if !strings.Contains(rel, "..") && rel != "." {
+			filedir = filedir[:len(filedir)-len(rel)-1]
+		}
+		filedir = strings.Replace(filedir, "\\", "/", -1)
+		if strings.HasPrefix(filedir, gopath) {
+			filedir = filedir[len(gopath)+1:]
+		}
+		//fmt.Printf("filedir='%v' => '%v'\n", f, filedir)
+		if strings.HasPrefix(file, filedir) {
+			file = file[len(filedir)+1:]
+		}
+		file = m + file
+	}
+	fl := &fileLine{file: file, line: ln, prefix: filedir}
 	return fl, nil
 }
 
