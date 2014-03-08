@@ -65,6 +65,54 @@ func lookForReason(l *lexer) stateFn {
 	return lookForReason
 }
 
+type stack struct {
+	function string
+	fileLine *fileLine
+}
+
+var functionRx, _ = regexp.Compile(`\s*?([^ ]+/[^\.]+)\.([^\)]+\))`)
+
+func (s *stack) String() string {
+	msg := ""
+	if s.fileLine != nil {
+		msg = msg + s.fileLine.String() + " "
+	}
+	msg = msg + s.function
+	return msg
+}
+
+func lookForStack(l *lexer) stateFn {
+	line := l.lines[l.pos]
+	if strings.Contains(line, "[running]:") ||
+		strings.Contains(line, "runtime.panic") ||
+		strings.Contains(line, "runtime/panic") {
+		l.pos = l.pos + 1
+		return lookForStack
+	}
+	if strings.Contains(line, "testing.tRunner(") ||
+		strings.Contains(line, "created by testing.RunTests") {
+		l.pos = l.pos + 2
+		return lookForStack
+	}
+	if strings.TrimSpace(line) == "" {
+		return nil
+	}
+	res := functionRx.FindStringSubmatch(line)
+	if res == nil {
+		return l.errorf("Unable to read function in stack line '%v': '%v'\n", l.pos, line)
+	}
+	function := res[1] + "." + res[2]
+
+	l.pos = l.pos + 1
+	line = l.lines[l.pos]
+
+	s := &stack{function: function}
+	fmt.Println(s.String())
+
+	l.pos = l.pos + 1
+	return lookForStack
+}
+
 func (l *lexer) errorf(format string, args ...interface{}) stateFn {
 	fmt.Printf(format, args...)
 	return nil
