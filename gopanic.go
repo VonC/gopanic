@@ -27,17 +27,23 @@ func main() {
 	}
 
 	lines := strings.Split(string(b), "\n")
-	lexer := &lexer{lines: lines}
+	lexer := &lexer{lines: lines, stacks: []*stack{}}
 	for state := lookForReason; state != nil; {
 		state = state(lexer)
+	}
+	for _, stack := range lexer.stacks {
+		stack.max = lexer.max + 2
+		fmt.Println(stack)
 	}
 	fmt.Println("done")
 }
 
 type stateFn func(*lexer) stateFn
 type lexer struct {
-	lines []string
-	pos   int
+	lines  []string
+	pos    int
+	stacks []*stack
+	max    int
 }
 
 var fileLineRx, _ = regexp.Compile(`\s*?\*?\s*?(/?[^\*\s/\\]+(?:[/\\][^/\\:]+)+):?(\d+)?`)
@@ -75,6 +81,7 @@ func lookForReason(l *lexer) stateFn {
 type stack struct {
 	function string
 	fileLine *fileLine
+	max      int
 }
 
 var functionRx, _ = regexp.Compile(`\s*?([^ ]+/[^\.]+)\.([^\)]+\))`)
@@ -83,9 +90,11 @@ func (s *stack) String() string {
 	msg := ""
 	f := s.function
 	if s.fileLine != nil {
-		msg = msg + s.fileLine.String() + " "
+		fl := s.fileLine.String()
+		l := s.max - len(fl)
+		msg = msg + fl + strings.Repeat(" ", l)
 		if strings.HasPrefix(f, s.fileLine.prefix) {
-			f = f[len(s.fileLine.prefix):]
+			f = f[len(s.fileLine.prefix)+1:]
 		}
 	}
 	msg = msg + f
@@ -124,7 +133,10 @@ func lookForStack(l *lexer) stateFn {
 	}
 
 	s := &stack{fileLine: fl, function: function}
-	fmt.Println(s.String())
+	l.stacks = append(l.stacks, s)
+	if l.max < fl.lenf {
+		l.max = fl.lenf
+	}
 
 	l.pos = l.pos + 1
 	return lookForStack
@@ -139,6 +151,7 @@ type fileLine struct {
 	file   string
 	prefix string
 	line   int
+	lenf   int
 }
 
 func newFileLine(line string) (*fileLine, error) {
@@ -190,7 +203,7 @@ func newFileLine(line string) (*fileLine, error) {
 		}
 		file = m + file
 	}
-	fl := &fileLine{file: file, line: ln, prefix: filedir}
+	fl := &fileLine{file: file, line: ln, prefix: filedir, lenf: len(file) + len(res[2])}
 	return fl, nil
 }
 
