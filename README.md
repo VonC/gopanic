@@ -3,7 +3,7 @@ gopanic
 
 Go panic reader, for quickly see where the error comes from
 
-Quik, tell me what are the classes of *your* program involves in the following error:
+Quick, tell me what are the classes of *your* program involved in the following error:
 
 ````
   * C:/Users/vonc/prog/go/src/github.com/VonC/asciidocgo/substitutors_test.go
@@ -38,4 +38,32 @@ Quik, tell me what are the classes of *your* program involves in the following e
 ````
 
 ... If all you see is a blurring wall of text, you are not the only one.
-This gopanic utility wants to help filter the output, and display only what matters.
+
+This `gopanic` utility wants to help filter the output, and display only what matters.
+
+Install `gopanic`:
+
+    go get github.com/VonC/gopanic
+
+Then go to any sub-folder of your project:
+````
+cd path/to/your/go/project
+cd a/subdirectory
+go test ../..|gopanic
+````
+
+The panic dump stack will now look like:
+
+````
+C:\Users\vonc\prog\go\src\github.com\VonC\asciidocgo\consts\compliance>go test ../..|gopanic
+PANIC:
+../../substitutors_test.go:638 slice bounds out of range
+../regexps/regexps.go:97       regexps.newReresLA(0x667550, 0x5d, 0xc08400cbe0, 0x0, 0x1)
+../regexps/regexps.go:56       regexps.NewReresLAGroup(0x667550, 0x5d, 0xc08400cbe0, 0x5)
+../regexps/regexps.go:294      regexps.NewIndextermInlineMacroRxres(0x667550, 0x5d, 0x613960)
+../../substitutors.go:1084     (*substitutors)
+../../substitutors_test.go:638 func·290()
+../../substitutors_test.go:640 TestSubstitutor(0xc084035cf0)
+````
+
+This seems easier on the eyes, and easier to debug.
