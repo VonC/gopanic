@@ -19,7 +19,6 @@ var pwd, _ = os.Getwd()
 func main() {
 	gopath = strings.Replace(gopath, "\\", "/", -1)
 	pwd = strings.Replace(pwd, "\\", "/", -1)
-	fmt.Println(gopath)
 	// http://stackoverflow.com/questions/12363030/read-from-initial-stdin-in-go
 	b, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {
