@@ -83,7 +83,7 @@ type stack struct {
 	max      int
 }
 
-var functionRx, _ = regexp.Compile(`\s*?([^ ]+/[^\.]+)\.([^\)]+\))`)
+var functionRx, _ = regexp.Compile(`\s*?([^ ]+/[^\.]+)\.((?:(?:[^\)]+\))\.?)+)`)
 
 func (s *stack) String() string {
 	msg := ""
@@ -117,6 +117,7 @@ func lookForStack(l *lexer) stateFn {
 		return nil
 	}
 	res := functionRx.FindStringSubmatch(line)
+	//fmt.Println(res)
 	if res == nil {
 		return l.errorf("Unable to read function in stack line '%v': '%v'\n", l.pos, line)
 	}
