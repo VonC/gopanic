@@ -8,6 +8,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	. "github.com/VonC/godbg"
 )
 import "fmt"
 
@@ -34,7 +36,7 @@ func main() {
 		stack.max = lexer.max + 2
 		fmt.Println(stack)
 	}
-	fmt.Println("done")
+	Pdbgf("done")
 }
 
 type stateFn func(*lexer) stateFn
