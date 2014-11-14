@@ -24,8 +24,10 @@ func main() {
 	// http://stackoverflow.com/questions/12363030/read-from-initial-stdin-in-go
 	b, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {
+		Pdbgf("gopanic: ioutil.ReadAll(os.Stdin) => err: %s", err.Error())
 		os.Exit(-1)
 	}
+	// Pdbgf("ioutil.ReadAll(os.Stdin) => len: %d", len(b))
 
 	lines := strings.Split(string(b), "\n")
 	lexer := &lexer{lines: lines, stacks: []*stack{}}
@@ -36,7 +38,7 @@ func main() {
 		stack.max = lexer.max + 2
 		fmt.Println(stack)
 	}
-	Pdbgf("done")
+	// Pdbgf("done")
 }
 
 type stateFn func(*lexer) stateFn
