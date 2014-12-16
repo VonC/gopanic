@@ -1,0 +1,18 @@
+C:\Users\vonc\prog\go\src\oslc\deletewi>deletewi.exe e
+panic: Error during LoggerFromConfigAsBytes: filter has unexpected attribute: funcpattern
+
+goroutine 1 [running]:
+main.main()
+        C:/Users/vonc/prog/go/src/oslc/deletewi/deletewi.go:36 +0x17f
+
+goroutine 3 [runnable]:
+github.com/VonC/seelog.(*asyncLoopLogger).processQueue(0xc080095300)
+        C:/Users/vonc/prog/go/src/github.com/VonC/seelog/behavior_asynclooplogger.go:62
+created by github.com/VonC/seelog.newAsyncLoopLogger
+        C:/Users/vonc/prog/go/src/github.com/VonC/seelog/behavior_asynclooplogger.go:41 +0x72
+
+goroutine 4 [runnable]:
+github.com/VonC/seelog.(*asyncLoopLogger).processQueue(0xc0800953c0)
+        C:/Users/vonc/prog/go/src/github.com/VonC/seelog/behavior_asynclooplogger.go:62
+created by github.com/VonC/seelog.newAsyncLoopLogger
+        C:/Users/vonc/prog/go/src/github.com/VonC/seelog/behavior_asynclooplogger.go:41 +0x72

@@ -1,0 +1,31 @@
+~~~~~~~~~~~~~~~~~~~~~~~~
+Errors:
+  * C:/Users/vonc/prog/go/src/github.com/VonC/asciidocgo/consts/regexps/regexps_test.go
+  Line 679: - runtime error: invalid memory address or nil pointer dereference
+  goroutine 3 [running]:
+  runtime.panic(0x578360, 0x7b934f)
+        C:/Users/ADMINI~1/AppData/Local/Temp/2/makerelease250988475/go/src/pkg/runtime/panic.c:248 +0x11b
+  regexp.(*Regexp).allMatches(0x0, 0x607530, 0xd0, 0x0, 0x0, ...)
+        C:/Users/ADMINI~1/AppData/Local/Temp/2/makerelease250988475/go/src/pkg/regexp/regexp.go:610 +0x100
+  regexp.(*Regexp).FindAllStringSubmatchIndex(0x0, 0x607530, 0xd0, 0xd1, 0xc0840009c0, ...)
+        C:/Users/ADMINI~1/AppData/Local/Temp/2/makerelease250988475/go/src/pkg/regexp/regexp.go:1052 +0xec
+  github.com/VonC/asciidocgo/consts/regexps.NewReres(0x607530, 0xd0, 0x0, 0xc08405f780)
+        github.com/VonC/asciidocgo/consts/regexps/_test/regexps.go:48 +0x52
+  github.com/VonC/asciidocgo/consts/regexps.NewInlineAnchorRxres(0x607530, 0xd0, 0x3)
+        github.com/VonC/asciidocgo/consts/regexps/_test/regexps.go:246 +0x4c
+  github.com/VonC/asciidocgo/consts/regexps.funcÂ·050()
+        C:/Users/vonc/prog/go/src/github.com/VonC/asciidocgo/consts/regexps/regexps_test.go:679 +0x37
+  github.com/VonC/asciidocgo/consts/regexps.TestRegexps(0xc08403a1b0)
+        C:/Users/vonc/prog/go/src/github.com/VonC/asciidocgo/consts/regexps/regexps_test.go:686 +0x15c3
+  testing.tRunner(0xc08403a1b0, 0x7b4ae0)
+        C:/Users/ADMINI~1/AppData/Local/Temp/2/makerelease250988475/go/src/pkg/testing/testing.go:391 +0x8e
+  created by testing.RunTests
+        C:/Users/ADMINI~1/AppData/Local/Temp/2/makerelease250988475/go/src/pkg/testing/testing.go:471 +0x8b5
+
+  goroutine 1 [chan receive]:
+  testing.RunTests(0x5ffd00, 0x7b4ae0, 0x1, 0x1, 0x53a201)
+        C:/Users/ADMINI~1/AppData/Local/Temp/2/makerelease250988475/go/src/pkg/testing/testing.go:472 +0x8d8
+  testing.Main(0x5ffd00, 0x7b4ae0, 0x1, 0x1, 0x7bc440, ...)
+        C:/Users/ADMINI~1/AppData/Local/Temp/2/makerelease250988475/go/src/pkg/testing/testing.go:403 +0x87
+  main.main()
+        github.com/VonC/asciidocgo/consts/regexps/_test/_testmain.go:93 +0x11e
