@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"testing"
 	. "github.com/VonC/godbg"
 	. "github.com/smartystreets/goconvey/convey"
+	"io/ioutil"
+	"testing"
 )
 
 func TestGoPanic(t *testing.T) {
