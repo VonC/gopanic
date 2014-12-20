@@ -1,7 +1,7 @@
 package main
 
 import (
-	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -11,7 +11,6 @@ import (
 
 	. "github.com/VonC/godbg"
 )
-import "fmt"
 
 var gopath = os.Getenv("gopath") + "/src"
 var pwd, _ = os.Getwd()
@@ -161,13 +160,13 @@ type fileLine struct {
 func newFileLine(line string) (*fileLine, error) {
 	res := fileLineRx.FindStringSubmatch(line)
 	if res == nil {
-		return nil, errors.New(fmt.Sprintf("No file-line found in line '%v'", line))
+		return nil, fmt.Errorf("No file-line found in line '%v'", line)
 	}
 	var ln int
 	var err error
 	if res[2] != "" {
 		if ln, err = strconv.Atoi(res[2]); err != nil {
-			return nil, errors.New(fmt.Sprintf("Couldn't extract line number for from line '%v' '%v'", res[2], res))
+			return nil, fmt.Errorf("Couldn't extract line number for from line '%v' '%v'", res[2], res)
 		}
 	}
 	file := strings.TrimSpace(res[1])
