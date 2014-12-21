@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -14,6 +15,7 @@ import (
 
 var gopath = os.Getenv("gopath") + "/src"
 var pwd, _ = os.Getwd()
+var in io.Reader = os.Stdin
 
 // http://stackoverflow.com/questions/6359318/how-do-i-send-a-message-to-stderr-from-cmd
 // a_command 2>&1 | gopanic
@@ -21,7 +23,7 @@ func main() {
 	gopath = strings.Replace(gopath, "\\", "/", -1)
 	pwd = strings.Replace(pwd, "\\", "/", -1)
 	// http://stackoverflow.com/questions/12363030/read-from-initial-stdin-in-go
-	b, err := ioutil.ReadAll(os.Stdin)
+	b, err := ioutil.ReadAll(in)
 	if err != nil {
 		Pdbgf("gopanic: ioutil.ReadAll(os.Stdin) => err: %s", err.Error())
 		os.Exit(-1)
