@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
+	"testing"
+
 	. "github.com/VonC/godbg"
 	. "github.com/smartystreets/goconvey/convey"
-	"io/ioutil"
-	"testing"
 )
 
 func TestGoPanic(t *testing.T) {
@@ -17,7 +19,13 @@ func TestGoPanic(t *testing.T) {
 			t.Fail()
 		}
 		for _, file := range files {
-			fmt.Println(file.Name())
+			Pdbgf(file.Name())
+			if in, err = os.Open("tests/" + file.Name()); err == nil {
+				Pdbgf("ok open")
+			} else {
+				Pdbgf("Unable to access open file '%v'\n'%v'\n", file.Name(), err)
+				t.Fail()
+			}
 		}
 	})
 }
