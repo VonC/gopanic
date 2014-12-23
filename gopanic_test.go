@@ -22,6 +22,7 @@ func TestGoPanic(t *testing.T) {
 			Pdbgf(file.Name())
 			if in, err = os.Open("tests/" + file.Name()); err == nil {
 				Pdbgf("ok open")
+				main()
 			} else {
 				Pdbgf("Unable to access open file '%v'\n'%v'\n", file.Name(), err)
 				t.Fail()
