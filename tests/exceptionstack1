@@ -1,0 +1,38 @@
+Errors:
+
+  * C:/Users/vonc/prog/go/src/github.com/VonC/gopanic/gopanic_test.go
+  Line 25: - runtime error: index out of range
+  goroutine 20 [running]:
+  runtime.panic(0x5896e0, 0x6a11dc)
+        c:/go/src/pkg/runtime/panic.c:248 +0x1d3
+  github.com/VonC/gopanic.lookForReason(0xc082005080, 0x600208)
+        C:/Users/vonc/prog/go/src/github.com/VonC/gopanic/gopanic.go:58 +0x840
+  github.com/VonC/gopanic.main()
+        C:/Users/vonc/prog/go/src/github.com/VonC/gopanic/gopanic.go:37 +0x4ce
+  github.com/VonC/gopanic.func·001()
+        C:/Users/vonc/prog/go/src/github.com/VonC/gopanic/gopanic_test.go:25 +0x3ba
+  github.com/VonC/gopanic.TestGoPanic(0xc082044000)
+        C:/Users/vonc/prog/go/src/github.com/VonC/gopanic/gopanic_test.go:31 +0x147
+  testing.tRunner(0xc082044000, 0x69bc40)
+        c:/go/src/pkg/testing/testing.go:422 +0x92
+  created by testing.RunTests
+        c:/go/src/pkg/testing/testing.go:504 +0x8e2
+
+  goroutine 16 [chan receive]:
+  testing.RunTests(0x6003e8, 0x69bc40, 0x1, 0x1, 0x1)
+        c:/go/src/pkg/testing/testing.go:505 +0x92a
+  testing.Main(0x6003e8, 0x69bc40, 0x1, 0x1, 0x6a80c0, 0x0, 0x0, 0x6a80c0, 0x0, 0x0)
+        c:/go/src/pkg/testing/testing.go:435 +0x8b
+  main.main()
+        github.com/VonC/gopanic/_test/_testmain.go:47 +0xa3
+
+  goroutine 19 [finalizer wait]:
+  runtime.park(0x415040, 0x6a4348, 0x6a2d29)
+        c:/go/src/pkg/runtime/proc.c:1369 +0xac
+  runtime.parkunlock(0x6a4348, 0x6a2d29)
+        c:/go/src/pkg/runtime/proc.c:1385 +0x42
+  runfinq()
+        c:/go/src/pkg/runtime/mgc0.c:2644 +0xdd
+  runtime.goexit()
+        c:/go/src/pkg/runtime/proc.c:1445
+
