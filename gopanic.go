@@ -28,10 +28,11 @@ func main() {
 		Pdbgf("gopanic: ioutil.ReadAll(os.Stdin) => err: %s", err.Error())
 		os.Exit(-1)
 	}
-	// Pdbgf("ioutil.ReadAll(os.Stdin) => len: %d", len(b))
+	// Pdbgf("ioutil.ReadAll(in) => len: %d", len(b))
 
 	lines := strings.Split(string(b), "\n")
 	lexer := &lexer{lines: lines, stacks: []*stack{}}
+	// Pdbgf("len: %d, pos %d", len(lexer.lines), lexer.pos)
 	for state := lookForReason; state != nil; {
 		state = state(lexer)
 	}
@@ -55,7 +56,7 @@ var causeRx, _ = regexp.Compile(`Line (\d+):[^:]+:\s+(.*?)$`)
 
 func lookForReason(l *lexer) stateFn {
 	line := l.lines[l.pos]
-	//fmt.Printf("Look at line '%v': '%v'\n", l.pos, line)
+	// Pdbgf("Look at line '%v': '%v'\n", l.pos, line)
 	if strings.Contains(line, " *") {
 		var fl *fileLine
 		var err error
