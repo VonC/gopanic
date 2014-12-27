@@ -19,6 +19,9 @@ func TestGoPanic(t *testing.T) {
 			t.Fail()
 		}
 		for _, file := range files {
+			if file.Name() != "exceptionstack2" {
+				continue
+			}
 			Pdbgf(file.Name())
 			if in, err = os.Open("tests/" + file.Name()); err == nil {
 				Pdbgf("ok open")
