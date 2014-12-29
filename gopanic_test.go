@@ -25,7 +25,15 @@ func TestGoPanic(t *testing.T) {
 			Pdbgf(file.Name())
 			if in, err = os.Open("tests/" + file.Name()); err == nil {
 				Pdbgf("ok open")
+				writers = NewPdbg(SetBuffers)
 				main()
+				So(writers.OutString(), ShouldEqual, `PANIC:
+gopanic_test.go:25 index out of range
+gopanic.go:58      lookForReason(0xc082005080, 0x600208)
+gopanic.go:37      main()
+gopanic_test.go:25 func·001()
+gopanic_test.go:31 TestGoPanic(0xc082044000)
+`)
 			} else {
 				Pdbgf("Unable to access open file '%v'\n'%v'\n", file.Name(), err)
 				t.Fail()

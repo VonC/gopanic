@@ -16,6 +16,7 @@ import (
 var gopath = os.Getenv("gopath") + "/src"
 var pwd, _ = os.Getwd()
 var in io.Reader = os.Stdin
+var writers *Pdbg = NewPdbg()
 
 // http://stackoverflow.com/questions/6359318/how-do-i-send-a-message-to-stderr-from-cmd
 // a_command 2>&1 | gopanic
@@ -38,7 +39,7 @@ func main() {
 	}
 	for _, stack := range lexer.stacks {
 		stack.max = lexer.max + 2
-		fmt.Println(stack)
+		fmt.Fprintln(writers.Out(), stack.String())
 	}
 	// Pdbgf("done")
 }
@@ -75,7 +76,7 @@ func lookForReason(l *lexer) stateFn {
 		}
 		fl.line = ln
 		r := &reason{cause: res[2], file: fl}
-		fmt.Println("PANIC:\n" + r.String())
+		fmt.Fprintln(writers.Out(), "PANIC:\n"+r.String())
 		l.pos = l.pos + 1
 		return lookForStack
 	}
