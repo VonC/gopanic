@@ -27,17 +27,16 @@ func TestGoPanic(t *testing.T) {
 				Pdbgf("Unable to access open file '%v'\n'%v'\n", file.Name(), err)
 				t.Fail()
 			}
+			var resb []byte
+			if resb, err = ioutil.ReadFile("tests/" + file.Name() + ".res"); err != nil {
+				Pdbgf("Unable to access open RES file '%v'\n'%v'\n", file.Name()+".res", err)
+				t.Fail()
+			}
+			res := string(resb)
 			Pdbgf("ok open")
 			writers = NewPdbg(SetBuffers)
 			main()
-			So(writers.OutString(), ShouldEqual, `PANIC:
-gopanic_test.go:25 index out of range
-gopanic.go:58      lookForReason(0xc082005080, 0x600208)
-gopanic.go:37      main()
-gopanic_test.go:25 func·001()
-gopanic_test.go:31 TestGoPanic(0xc082044000)
-`)
-
+			So(writers.OutString(), ShouldEqual, res)
 		}
 	})
 }
