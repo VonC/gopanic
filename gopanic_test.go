@@ -19,7 +19,7 @@ func TestGoPanic(t *testing.T) {
 			t.Fail()
 		}
 		for _, file := range files {
-			if file.Name() != "exceptionstack1" {
+			if file.Name() != "exceptionstack2" {
 				continue
 			}
 			Pdbgf(file.Name())
