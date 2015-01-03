@@ -52,6 +52,10 @@ type lexer struct {
 	max    int
 }
 
+func (l *lexer) line() int {
+	return l.pos + 1
+}
+
 var fileLineRx, _ = regexp.Compile(`\s*?\*?\s*?(/?[^\*\s/\\]+(?:[/\\][^/\\:]+)+):?(\d+)?`)
 var causeRx, _ = regexp.Compile(`Line (\d+):[^:]+:\s+(.*?)$`)
 
