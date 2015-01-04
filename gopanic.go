@@ -66,17 +66,17 @@ func lookForReason(l *lexer) stateFn {
 		var fl *fileLine
 		var err error
 		if fl, err = newFileLine(line); err != nil {
-			return l.errorf("Unable to read file for reason in line '%v'\n Cause: '%v'", l.pos, err)
+			return l.errorf("Unable to read file for reason in line '%v'\n Cause: '%v'", l.line(), err)
 		}
 		l.pos = l.pos + 1
 		line := l.lines[l.pos]
 		res := causeRx.FindStringSubmatch(line)
 		if res == nil {
-			return l.errorf("Unable to read cause in line '%v': '%v'", l.pos, line)
+			return l.errorf("Unable to read cause in line '%v': '%v'", l.line(), line)
 		}
 		var ln int
 		if ln, err = strconv.Atoi(res[1]); err != nil {
-			return l.errorf(fmt.Sprintf("Couldn't extract cause line number for from line '%v': '%v'", l.pos, line))
+			return l.errorf(fmt.Sprintf("Couldn't extract cause line number for from line '%v': '%v'", l.line(), line))
 		}
 		fl.line = ln
 		r := &reason{cause: res[2], file: fl}
@@ -130,7 +130,7 @@ func lookForStack(l *lexer) stateFn {
 	res := functionRx.FindStringSubmatch(line)
 	//fmt.Println(res)
 	if res == nil {
-		return l.errorf("Unable to read function in stack line '%v': '%v'\n", l.pos, line)
+		return l.errorf("Unable to read function in stack line '%v': '%v'\n", l.line(), line)
 	}
 	function := res[1] + "." + res[2]
 
@@ -140,7 +140,7 @@ func lookForStack(l *lexer) stateFn {
 	var fl *fileLine
 	var err error
 	if fl, err = newFileLine(line); err != nil {
-		return l.errorf("Unable to read file for reason in line '%v'\n Cause: '%v'", l.pos, err)
+		return l.errorf("Unable to read file for reason in line '%v'\n Cause: '%v'", l.line(), err)
 	}
 
 	s := &stack{fileLine: fl, function: function}
