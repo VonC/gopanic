@@ -94,6 +94,8 @@ type stack struct {
 	max      int
 }
 
+// github.com/VonC/gopanic.lookForReason(0xc082005080, 0x600208)
+// regexp.(*Regexp).allMatches(0x0, 0x607530, 0xd0, 0x0, 0x0, ...)
 var functionRx, _ = regexp.Compile(`\s*?([^ ]+/[^\.]+)\.((?:(?:[^\)]+\))\.?)+)`)
 
 func (s *stack) String() string {
