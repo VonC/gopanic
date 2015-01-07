@@ -101,7 +101,7 @@ var functionRx, _ = regexp.Compile(`\s*?(?:([^ ]+/[^\.]+)\.)?((?:(?:[^\)]+\))\.?
 func (s *stack) String() string {
 	msg := ""
 	f := s.function
-	if s.fileLine != nil {
+	if s.fileLine != nil && s.max > 0 {
 		fl := s.fileLine.String()
 		l := s.max - len(fl)
 		msg = msg + fl + strings.Repeat(" ", l)
