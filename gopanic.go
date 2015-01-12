@@ -183,7 +183,7 @@ func newFileLine(line string) (*fileLine, error) {
 	filedir := filepath.Dir(file)
 	f := filedir
 	rel, _ := filepath.Rel(pwd, filedir)
-	//fmt.Println("aaa: " + rel)
+	// fmt.Println("rel: " + pwd + ", " +filedir + " => '" + rel  +"'")
 	if strings.HasPrefix(file, gopath) {
 		file = file[len(gopath)+1:]
 	}
@@ -210,7 +210,7 @@ func newFileLine(line string) (*fileLine, error) {
 		if strings.HasPrefix(filedir, gopath) {
 			filedir = filedir[len(gopath)+1:]
 		}
-		//fmt.Printf("filedir='%v' => '%v'\n", f, filedir)
+		// fmt.Printf("filedir='%v' => '%v'\n", f, filedir)
 		if strings.HasPrefix(file, filedir) {
 			file = file[len(filedir)+1:]
 		}
