@@ -56,6 +56,7 @@ func (l *lexer) line() int {
 	return l.pos + 1
 }
 
+// To check: is unix display the same '*'? see test 4
 var fileLineRx, _ = regexp.Compile(`\s*?\*?\s*?(/?[^\*\s/\\]+(?:[/\\][^/\\:]+)+):?(\d+)?`)
 var causeRx, _ = regexp.Compile(`Line (\d+):[^:]+:\s+(.*?)$`)
 
