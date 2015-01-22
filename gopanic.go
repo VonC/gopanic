@@ -18,6 +18,12 @@ var pwd, _ = os.Getwd()
 var in io.Reader = os.Stdin
 var writers *Pdbg = NewPdbg()
 
+// http://stackoverflow.com/questions/26225513/how-to-test-os-exit-scenarios-in-go
+type exiter func(code int)
+
+var exitfct exiter = func(code int) { os.Exit(code) }
+var readAllerr bool = false
+
 // http://stackoverflow.com/questions/6359318/how-do-i-send-a-message-to-stderr-from-cmd
 // a_command 2>&1 | gopanic
 func main() {
@@ -25,9 +31,9 @@ func main() {
 	pwd = strings.Replace(pwd, "\\", "/", -1)
 	// http://stackoverflow.com/questions/12363030/read-from-initial-stdin-in-go
 	b, err := ioutil.ReadAll(in)
-	if err != nil {
-		Pdbgf("gopanic: ioutil.ReadAll(os.Stdin) => err: %s", err.Error())
-		os.Exit(-1)
+	if err != nil || readAllerr {
+		Pdbgf("gopanic: ioutil.ReadAll(os.Stdin) => err: %s", errorString(err))
+		exitfct(-1)
 	}
 	// Pdbgf("ioutil.ReadAll(in) => len: %d", len(b))
 
@@ -42,6 +48,14 @@ func main() {
 		fmt.Fprintln(writers.Out(), stack.String())
 	}
 	// Pdbgf("done")
+}
+
+func errorString(err error) string {
+	res := ""
+	if err != nil {
+		return err.Error()
+	}
+	return res
 }
 
 type stateFn func(*lexer) stateFn

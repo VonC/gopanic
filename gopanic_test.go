@@ -13,7 +13,13 @@ import (
 )
 
 func TestGoPanic(t *testing.T) {
+
 	Convey("Test main", t, func() {
+		Convey("ioutil.ReadAll(os.Stdin) could exit in error", func() {
+			exitfct = func(code int){}
+			readAllerr = true
+			main()
+		})
 		fmt.Println("test main")
 		files, err := ioutil.ReadDir("./tests")
 		if err != nil {
