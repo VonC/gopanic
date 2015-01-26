@@ -34,6 +34,7 @@ func main() {
 	if err != nil || readAllerr {
 		Pdbgf("gopanic: ioutil.ReadAll(os.Stdin) => err: %s", errorString(err))
 		exitfct(-1)
+		return
 	}
 	// Pdbgf("ioutil.ReadAll(in) => len: %d", len(b))
 
